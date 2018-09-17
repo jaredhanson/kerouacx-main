@@ -1,1 +1,1 @@
-# main
+# @kerouac/main
