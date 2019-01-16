@@ -1,6 +1,6 @@
 exports = module.exports = function(IoC, logger) {
   
-  return IoC.create('site')
+  return IoC.create('app/site')
     .catch(function(err) {
       console.log(err)
       
