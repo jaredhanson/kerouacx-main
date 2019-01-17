@@ -1,23 +1,29 @@
-exports = module.exports = function(IoC, logger) {
+exports = module.exports = function(IoC, settings, logger) {
   var kerouac = require('kerouac');
   
   
   var root = kerouac();
+  // TODO: Load dynamically
+  //root.engine('pug', require('pug'));
+  root.set('base url', settings.get('site/baseURL'));
+  root.set('layout engine', 'pug');
+  root.locals.pretty = true;
   
   return Promise.resolve(root)
     .then(function(root) {
       var components = IoC.components('http://i.kerouacjs.org/Site');
   
-      return Promise.all(components.map(function(comp) { return comp.create(); } ))
+      return Promise.all(components.map(function(component) { return component.create(); } ))
         .then(function(sites) {
           sites.forEach(function(site, i) {
             var component = components[i]
               , path = component.a['@path'];
             
-            logger.info('Loaded WWW site: ' + path);
             if (path) {
+              logger.debug('Mounted WWW site "' + component.id + '" at "' + path + '"');
               root.use(path, site);
             } else {
+              logger.debug('Mounted WWW site "' + component.id + '" at "/"');
               root.use(site);
             }
           });
@@ -33,5 +39,6 @@ exports = module.exports = function(IoC, logger) {
 
 exports['@require'] = [
   '!container',
+  'http://i.bixbyjs.org/Settings',
   'http://i.bixbyjs.org/Logger'
 ];

@@ -2,7 +2,7 @@ exports = module.exports = function(IoC, logger) {
   
   return IoC.create('app/site')
     .catch(function(err) {
-      console.log(err)
+      //console.log(err)
       
       // TODO: Check that the error is failure to create app/service
       return IoC.create('./site');
