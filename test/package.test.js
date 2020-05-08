@@ -1,13 +1,19 @@
 /* global describe, it */
 
-var pkg = require('..');
 var expect = require('chai').expect;
 
 
-describe('main', function() {
+describe('@kerouac/main', function() {
   
-  it('should export hello world', function() {
-    expect(pkg.hello).to.equal('world');
+  
+  describe('package.json', function() {
+    var json = require('../package.json');
+    
+    it('should have component metadata', function() {
+      expect(json.namespace).to.equal('org.kerouacjs');
+      expect(json.components).to.have.length(1);
+      expect(json.components).to.include('main');
+    });
   });
   
 });
