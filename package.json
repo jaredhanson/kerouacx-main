@@ -24,12 +24,12 @@
       "url": "http://opensource.org/licenses/MIT"
     }
   ],
-  "main": "./app",
-  "assembly": {
-    "namespace": "org.kerouacjs",
-    "components": [
-      "main"
-    ]
+  "namespace": "org.kerouacjs",
+  "components": [
+    "main"
+  ],
+  "directories": {
+    "com": "com"
   },
   "dependencies": {
     "kerouac": "^0.1.0"
