@@ -7,7 +7,7 @@
  * This package provides a default site component which eliminates the
  * boilerplate typically used in most sites.  It is expected that most sites
  * will take advantage of this capability.  However, the main script will
- * preferrentially load a site-specific component, accomodating sites that need
+ * preferrentially load an app-specific component, accomodating sites that need
  * to override the standard boilerplate.
  *
  * Once the site is created, static files will be generated.
