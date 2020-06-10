@@ -35,7 +35,6 @@ exports = module.exports = function(IoC, logger) {
     });
 };
 
-exports['@singleton'] = true;
 exports['@implements'] = 'http://i.bixbyjs.org/main';
 exports['@require'] = [
   '!container',
