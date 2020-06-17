@@ -16,27 +16,6 @@ describe('main', function() {
     expect(factory['@implements']).to.equal('http://i.bixbyjs.org/main');
   });
   
-  describe('when app provides app-specific site', function(done) {
-    var site = sinon.stub(kerouac());
-    site.generate.yields(null);
-    
-    var container = new Object();
-    container.create = sinon.stub().resolves(site);
-    
-    before(function(done) {
-      factory(container).then(done, done);
-    });
-    
-    it('should create site', function() {
-      expect(container.create).to.be.calledOnce;
-      expect(container.create).to.be.calledWith('app/site');
-    });
-    
-    it('should generate site', function() {
-      expect(site.generate).to.be.called;
-    });
-  }); // when app provides app-specific site
-  
   describe('when app uses default site', function(done) {
     var site = sinon.stub(kerouac());
     site.generate.yields(null);
@@ -64,5 +43,26 @@ describe('main', function() {
       expect(site.generate).to.be.called;
     });
   }); // when app uses default site
+  
+  describe('when app provides app-specific site', function(done) {
+    var site = sinon.stub(kerouac());
+    site.generate.yields(null);
+    
+    var container = new Object();
+    container.create = sinon.stub().resolves(site);
+    
+    before(function(done) {
+      factory(container).then(done, done);
+    });
+    
+    it('should create site', function() {
+      expect(container.create).to.be.calledOnce;
+      expect(container.create).to.be.calledWith('app/site');
+    });
+    
+    it('should generate site', function() {
+      expect(site.generate).to.be.called;
+    });
+  }); // when app provides app-specific site
   
 });
