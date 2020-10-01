@@ -137,35 +137,4 @@ describe('main', function() {
     });
   }); // when site generation fails
   
-  describe('when site generation fails with code', function(done) {
-    var site = sinon.stub(kerouac());
-    var error = new Error('Something went wrong');
-    error.code = 'SOMETHING_WENT_WRONG';
-    site.generate.yieldsAsync(error);
-    
-    var container = new Object();
-    container.create = sinon.stub().resolves(site);
-    
-    var logger = new Object();
-    logger.error = sinon.spy();
-    
-    before(function(done) {
-      factory(container, logger).then(done, done);
-    });
-    
-    it('should create site', function() {
-      expect(container.create).to.be.calledOnce;
-      expect(container.create).to.be.calledWith('app/site');
-    });
-    
-    it('should generate site', function() {
-      expect(site.generate).to.be.called;
-    });
-    
-    it('should log messages', function() {
-      expect(logger.error).to.be.called;
-      expect(logger.error.getCall(0)).to.be.calledWith('Something went wrong code=SOMETHING_WENT_WRONG');
-    });
-  }); // when site generation fails with code
-  
 });

@@ -27,12 +27,7 @@ exports = module.exports = function(IoC, logger) {
     .then(function(site) {
       site.generate(function(err) {
         if (err) {
-          var msg = err.message;
-          if (err.code) { msg += ' code=' + err.code; }
-          logger.error(msg);
-          if (process.env.NODE_ENV == 'development') {
-            logger.error(err.stack);
-          }
+          logger.error(err.message);
           return;
         }
       });
