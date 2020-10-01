@@ -29,8 +29,11 @@ describe('main', function() {
     container.create.withArgs('app/site').rejects(error)
     container.create.withArgs('./site').resolves(site);
     
+    var logger = new Object();
+    logger.info = sinon.spy();
+    
     before(function(done) {
-      factory(container).then(done, done);
+      factory(container, logger).then(done, done);
     });
     
     it('should create site', function() {
@@ -40,7 +43,7 @@ describe('main', function() {
     });
     
     it('should generate site', function() {
-      expect(site.generate).to.be.called;
+      expect(site.generate).to.be.calledOnce;
     });
   }); // when app uses default site
   
@@ -51,8 +54,11 @@ describe('main', function() {
     var container = new Object();
     container.create = sinon.stub().resolves(site);
     
+    var logger = new Object();
+    logger.info = sinon.spy();
+    
     before(function(done) {
-      factory(container).then(done, done);
+      factory(container, logger).then(done, done);
     });
     
     it('should create site', function() {
@@ -64,5 +70,42 @@ describe('main', function() {
       expect(site.generate).to.be.called;
     });
   }); // when app provides app-specific site
+  
+  describe('when app provides app-specific site that fails to be created', function(done) {
+    var site = sinon.stub(kerouac());
+    site.generate.yields(null);
+    
+    var container = new Object();
+    container.create = sinon.stub().rejects(new Error('something went wrong'));
+    
+    var logger = new Object();
+    logger.info = sinon.spy();
+    
+    var error;
+    
+    before(function(done) {
+      factory(container, logger).then(
+        function() {
+          return done(new Error('should not create site'));
+        },
+        function(err) {
+          error = err;
+          return done();
+        });
+    });
+    
+    it('should attempt to create site', function() {
+      expect(container.create).to.be.calledOnce;
+      expect(container.create).to.be.calledWith('app/site');
+    });
+    
+    it('should not generate site', function() {
+      expect(site.generate).to.not.be.called;
+    });
+    
+    it('should rethrow error', function() {
+      expect(error.message).to.equal('something went wrong');
+    });
+  }); // when app provides app-specific site that fails to be created
   
 });
