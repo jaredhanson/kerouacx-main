@@ -27,9 +27,12 @@ exports = module.exports = function(IoC, logger) {
     .then(function(site) {
       site.generate(function(err) {
         if (err) {
-          // TODO: Log errors in a way that are useful.  Add test cases.
-          console.error(err.message);
-          console.error(err.stack);
+          var msg = err.message;
+          if (err.code) { msg += ' code=' + err.code; }
+          logger.error(msg);
+          if (process.env.NODE_ENV == 'development') {
+            logger.error(err.stack);
+          }
           return;
         }
       });
